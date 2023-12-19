@@ -51,7 +51,8 @@ git pull
 
 It uses the python plugin module minimalmodbus , than can be installed by
 ```
-pip3 install minimalmodbus
+sudo apt install pyserial
+sudo pip3 install minimalmodbus
 ```
 
 
