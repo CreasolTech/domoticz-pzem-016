@@ -21,7 +21,7 @@ PZEM-014 and PZEM-016 have RS485 port: one or more modules can be connected toge
 and then connected to Domoticz controller (Raspberry PI or other hardware) by using a cheap RS485/USB adapter or a RS485/net controller. Please remember
 that RS485 bus should be terminated in both ends by a 120 Ohm resistor.
 
-![PZEM-016 or PZEM-014 wiring schematic](https://images.creasol.it/domoticz-pzem-016-wiring.png)
+![PZEM-016 or PZEM-014 wiring schematic](https://images.creasol.it/PZEM-016_wiring.png)
 
 PZEM-004T has TTL outputs, so it can be connected to the controller by a TTL to serial adapter.
 
