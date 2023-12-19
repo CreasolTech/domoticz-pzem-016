@@ -1,6 +1,6 @@
 # domoticz-pzem-016 
 
-This is a plugin for the free open-source [Domoticz home automation system](https://www.domoticz.com) that **read one or more PZEM-014, PZEM-016, PZEM-004T energy meters by Modbus connection** (RS485 serial connection), providing the following data:
+This is a plugin for the free open-source [Domoticz home automation system](https://www.domoticz.com) that **read one or more PZEM-014, PZEM-016, PZEM-004T energy meters by Modbus connection** (RS485 serial connection), providing the following data: 
 * active power
 * active energy
 * voltage
@@ -19,7 +19,7 @@ The following items can be configured:
 ![Domoticz plugin configuration](https://images.creasol.it/domoticz-pzem-016-hardware.png)
 
 
-## Setting a different address to a PZEM-014 or PZEM-016 or PZEM-004T meter
+## Setting a different address to a PZEM-014 or PZEM-016 or PZEM-004T meter 
 From Linux it's possible to change the address of a meter (by default it's set to 1) by using the following command, that changes address from 1 to 11:
 ```
 mbpoll -mrtu -Pnone -a1 -b9600 -0 -1 -r2 /dev/ttyUSB0 11

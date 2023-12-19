@@ -10,9 +10,9 @@ Requirements:
 """
 
 """
-<plugin key="pzem-016" name="PZEM-016 PZEM-014 PZEM-004T energy meters" version="1.0" author="CreasolTech" externallink="https://github.com/CreasolTech/domoticz-pzem-016">
+<plugin key="pzem-016" name="PZEM-016 PZEM-014 PZEM-004T energy meters"  version="1.0" author="CreasolTech" externallink="https://github.com/CreasolTech/domoticz-pzem-016">
     <description>
-        <h2>Domoticz plugin for PZEM-016, PZEM-014 and PZEM-004T energy meters - Version 1.0</h2>
+        <h2>Domoticz plugin for PZEM-016, PZEM-014 and PZEM-004T energy meters - Version 1.0 </h2>
         More than one meter can be connected to the same bus, specifying their addresses separated by comma, for example <tt>1,2,3,124</tt> to read energy meters with slave address 1, 2, 3, 124<br/>
         For more info please check the <a href="https://github.com/CreasolTech/domoticz-pzem-016">GitHub plugin page</a>
     </description>
