@@ -10,7 +10,6 @@ This is a plugin for the free open-source [Domoticz home automation system](http
 
 ![Screenshot of devices created by domoticz-pzem-016 Domoticz plugin on smartphone](https://images.creasol.it/domoticz-pzem-016-screenshot.webp)
 
-
 The following items can be configured:
 * Bitrate, by default 9600 bps
 * Meter address, for example 1 (only one meter with address 1) or 11,12 (two devices with address 11 and 12: address should be separated by comma)
@@ -18,8 +17,15 @@ The following items can be configured:
 
 ![Domoticz plugin configuration](https://images.creasol.it/domoticz-pzem-016-hardware.png)
 
+PZEM-014 and PZEM-016 have RS485 port: one or more modules can be connected together by a standard "sensor alarm cable" (2x 0.22mm² wires + shield), 
+and then connected to Domoticz controller (Raspberry PI or other hardware) by using a cheap RS485/USB adapter or a RS485/net controller. Please remember
+that RS485 bus should be terminated in both ends by a 120 Ohm resistor.
 
-## Setting a different address to a PZEM-014 or PZEM-016 or PZEM-004T meter 
+![PZEM-016 or PZEM-014 wiring schematic](https://images.creasol.it/domoticz-pzem-016-wiring.png)
+
+PZEM-004T has TTL outputs, so it can be connected to the controller by a TTL to serial adapter.
+
+## Setting a different address to a PZEM-014 or PZEM-016 meter 
 From Linux it's possible to change the address of a meter (by default it's set to 1) by using the following command, that changes address from 1 to 11:
 ```
 mbpoll -mrtu -Pnone -a1 -b9600 -0 -1 -r2 /dev/ttyUSB0 11
