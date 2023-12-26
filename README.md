@@ -64,7 +64,17 @@ sudo pip3 install minimalmodbus
 
 Restart Domoticz, then go to Setup -> Hardware and add the Emmeti Mirai heat pump plugin, specifying a name for that hardware and the serial port to connect heat pump.
 
-**Plugin can be easily translate in other languages**: just add the language code to LANGS variable, and add a field to each device with the translated name of device. Please send a copy of the plugin.py file to linux at creasol dot it 
+## Translation in other languages
+**Plugin can be easily translate in other languages**: just copy and translate the rows below, and open an issue on github writing the modified lines with your translations, with the language code.
+```
+Words to translate in other languages (in double quotes):
+English                 Italian                 YourLanguage
+"Power/Energy"          "Potenza/Energia"       ""
+"Voltage"               "Tensione"              ""
+"Current"               "Corrente"              ""
+"Frequency"             "Frequenza"             ""
+"Power Factor"          "Fattore di Potenza"    ""
+```
 
 
 ## Credits
