@@ -68,7 +68,7 @@ Restart Domoticz, then go to Setup -> Hardware and add the Emmeti Mirai heat pum
 **Plugin can be easily translate in other languages**: just copy and translate the rows below, and open an issue on github writing the modified lines with your translations, with the language code.
 ```
 Words to translate in other languages (in double quotes):
-English                 Italian                 YourLanguage
+English (en)            Italian (it)            YourLanguage (??)
 "Power/Energy"          "Potenza/Energia"       ""
 "Voltage"               "Tensione"              ""
 "Current"               "Corrente"              ""

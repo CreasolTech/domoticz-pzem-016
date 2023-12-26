@@ -9,7 +9,7 @@ Requirements:
     2.USB to RS485 adapter/onverter 
 
 Words to translate in other languages (in double quotes):
-English                 Italian                 YourLanguage
+English (en)            Italian (it)            YourLanguage (??)
 "Power/Energy"          "Potenza/Energia"       ""
 "Voltage"               "Tensione"              ""
 "Current"               "Corrente"              ""
