@@ -7,6 +7,15 @@ Requirements:
     1.python module minimalmodbus -> http://minimalmodbus.readthedocs.io/en/master/
         (pi@raspberrypi:~$ sudo pip3 install minimalmodbus)
     2.USB to RS485 adapter/onverter 
+
+Words to translate in other languages (in double quotes):
+English                 Italian                 YourLanguage
+"Power/Energy"          "Potenza/Energia"       ""
+"Voltage"               "Tensione"              ""
+"Current"               "Corrente"              ""
+"Frequency"             "Frequenza"             ""
+"Power Factor"          "Fattore di Potenza"    ""
+
 """
 
 """
