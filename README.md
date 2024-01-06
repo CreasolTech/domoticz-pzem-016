@@ -23,7 +23,12 @@ that RS485 bus should be terminated in both ends by a 120 Ohm resistor.
 
 ![PZEM-016 or PZEM-014 wiring schematic](https://images.creasol.it/PZEM-016_wiring.png)
 
-PZEM-004T has TTL outputs, so it can be connected to the controller by a TTL to serial adapter.
+PZEM-004T has TTL outputs, so it can be connected to the controller by a TTL to serial adapter. 
+
+![PZEM-004T wiring schematic](https://images.creasol.it/PZEM-004T_TTL_USB.webp)
+
+Please note that while it's possible to easily connect many PZEM-016 and PZEM-014 to the same RS485 bus, to connect many PZEM-004T to a single TTL/USB interface some modifications are needed.
+
 
 ## Setting a different address to a PZEM-014 or PZEM-016 meter 
 From Linux it's possible to change the address of a meter (by default it's set to 1) by using the following command, that changes address from 1 to 11:
@@ -63,6 +68,7 @@ sudo pip3 install minimalmodbus
 
 
 Restart Domoticz, then go to Setup -> Hardware and add the Emmeti Mirai heat pump plugin, specifying a name for that hardware and the serial port to connect heat pump.
+
 
 ## Translation in other languages
 **Plugin can be easily translate in other languages**: just copy and translate the rows below, and open an issue on github writing the modified lines with your translations, with the language code.
