@@ -30,7 +30,8 @@ PZEM-004T has TTL outputs, so it can be connected to the controller by a TTL to 
 Please note that while it's possible to easily connect many PZEM-016 and PZEM-014 to the same RS485 bus, to connect many PZEM-004T to a single TTL/USB interface some modifications are needed.
 
 
-## Setting a different address to a PZEM-014 or PZEM-016 meter 
+## Setting a different address to a PZEM-014, PZEM-016 or PZEM-004T meter 
+
 From Linux it's possible to change the address of a meter (by default it's set to 1) by using the following command, that changes address from 1 to 11:
 ```
 mbpoll -mrtu -Pnone -a1 -b9600 -0 -1 -r2 /dev/ttyUSB0 11
