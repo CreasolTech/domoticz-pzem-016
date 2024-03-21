@@ -90,6 +90,7 @@ Many thanks to:
 
 ***
 
+Below a list of modules, produced in Europe by Creasol, designed for Domoticz to be reliable and optimized for very very low power consumption.
 
 ## Creasol DomBus modules
 Our industrial and home automation modules are designed to be

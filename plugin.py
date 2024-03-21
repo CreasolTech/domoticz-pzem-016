@@ -145,7 +145,7 @@ class BasePlugin:
                 Devices[s+3].Update(0, str(current))
                 Devices[s+4].Update(0, str(frequency))
                 Devices[s+5].Update(0, str(pf))
-            s+=5    # Increment the base for each device unit
+            s+=DEVSMAX    # Increment the base for each device unit
 
     def onCommand(self, Unit, Command, Level, Hue):
         Domoticz.Log(f"Command for {Devices[Unit].Name}: Unit={Unit}, Command={Command}, Level={Level}")
