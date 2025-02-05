@@ -19,9 +19,9 @@ English (en)            Italian (it)            YourLanguage (??)
 """
 
 """
-<plugin key="pzem-016" name="PZEM-016 PZEM-014 PZEM-004T energy meters"  version="1.0" author="CreasolTech" externallink="https://github.com/CreasolTech/domoticz-pzem-016">
+<plugin key="pzem-016" name="PZEM-016 PZEM-014 PZEM-004T energy meters"  version="1.1" author="CreasolTech" externallink="https://github.com/CreasolTech/domoticz-pzem-016">
     <description>
-        <h2>Domoticz plugin for PZEM-016, PZEM-014 and PZEM-004T energy meters - Version 1.0 </h2>
+        <h2>Domoticz plugin for PZEM-016, PZEM-014 and PZEM-004T energy meters - Version 1.1 </h2>
         More than one meter can be connected to the same bus, specifying their addresses separated by comma, for example <tt>1,2,3,124</tt> to read energy meters with slave address 1, 2, 3, 124<br/>
         For more info please check the <a href="https://github.com/CreasolTech/domoticz-pzem-016">GitHub plugin page</a>
     </description>
@@ -40,18 +40,13 @@ English (en)            Italian (it)            YourLanguage (??)
             </options>
         </param>
         <param field="Mode2" label="Meter address" width="40px" required="true" default="2,3,4" />
-        <param field="Mode6" label="Debug" width="75px">
-            <options>
-                <option label="True" value="Debug"/>
-                <option label="False" value="Normal"  default="true" />
-            </options>
-        </param>
     </params>
 </plugin>
 
 """
 
 import minimalmodbus    #v2.1.1
+import time
 import Domoticz         #tested on Python 3.9.2 in Domoticz 2021.1 and 2023.1
 
 
@@ -80,7 +75,7 @@ class BasePlugin:
         return
 
     def onStart(self):
-        Domoticz.Log("Starting PZEM-016 PZEM-014 plugin")
+        Domoticz.Status("Starting PZEM-016 PZEM-014 plugin")
         self.pollTime=30 if Parameters['Mode3']=="" else int(Parameters['Mode3'])
         Domoticz.Heartbeat(self.pollTime)
         self.runInterval = 1
@@ -89,7 +84,7 @@ class BasePlugin:
         if self._lang in LANGS:
             self.lang=DEVLANG+LANGS.index(self._lang)
         else:
-            Domoticz.Log(f"Language {self._lang} does not exist in dict DEVS, inside the domoticz-emmeti-mirai plugin, but you can contribute adding it ;-) Thanks!")
+            Domoticz.Error(f"Language {self._lang} does not exist in dict DEVS, inside the domoticz-emmeti-mirai plugin, but you can contribute adding it ;-) Thanks!")
             self._lang="en"
             self.lang=DEVLANG # default: english text
 
@@ -103,52 +98,57 @@ class BasePlugin:
                 if unit not in Devices:
                     Options=DEVS[i][DEVOPTIONS] if DEVS[i][DEVOPTIONS] else {}
                     Image=DEVS[i][DEVIMAGE] if DEVS[i][DEVIMAGE] else 0
-                    Domoticz.Log(f"Creating device Name={DEVS[i][self.lang]}, Unit=unit, Type={DEVS[i][DEVTYPE]}, Subtype={DEVS[i][DEVSUBTYPE]}, Switchtype={DEVS[i][DEVSWITCHTYPE]} Options={Options}, Image={Image}")
+                    Domoticz.Status(f"Creating device Name={DEVS[i][self.lang]}, Unit=unit, Type={DEVS[i][DEVTYPE]}, Subtype={DEVS[i][DEVSUBTYPE]}, Switchtype={DEVS[i][DEVSWITCHTYPE]} Options={Options}, Image={Image}")
                     Domoticz.Device(Name=DEVS[i][self.lang], Unit=unit, Type=DEVS[i][DEVTYPE], Subtype=DEVS[i][DEVSUBTYPE], Switchtype=DEVS[i][DEVSWITCHTYPE], Options=Options, Image=Image, Used=1).Create()
             s+=DEVSMAX;
 
 
     def onStop(self):
-        Domoticz.Log("Stopping PZEM-016 PZEM-014 plugin")
+        Domoticz.Status("Stopping PZEM-016 PZEM-014 plugin")
 
     def onHeartbeat(self):
         s=0
         for slave in self.slaves:
             # read all registers in one shot
-            try:
-                self.rs485 = minimalmodbus.Instrument(Parameters["SerialPort"], int(slave))
-                self.rs485.serial.baudrate = Parameters["Mode1"]
-                self.rs485.serial.bytesize = 8
-                self.rs485.serial.parity = minimalmodbus.serial.PARITY_NONE
-                self.rs485.serial.stopbits = 1
-                self.rs485.serial.timeout = 0.5
-                self.rs485.serial.exclusive = False # Fix From Forum Member 'lost'
-                self.rs485.debug = True
-                self.rs485.mode = minimalmodbus.MODE_RTU
-                self.rs485.close_port_after_each_call = True
-                register=self.rs485.read_registers(0, 9, 4) # Read all registers from 0 to 8, using function code 4
-                self.rs485.serial.close()  #  Close that door !
-            except:
-                Domoticz.Log(f"Error reading Modbus registers from device {slave}");
-            else:
-                voltage=register[0]/10                          # V
-                current=(register[1] + (register[2]<<16))/1000  # A
-                power=(register[3] + (register[4]<<16))/10      # W
-                energy=(register[5] + (register[6]<<16))        # Wh
-                frequency=register[7]/10                        # Hz
-                pf=register[8]/100                              # %
+            for retry in range(1,3):
+                try:
+                    self.rs485 = minimalmodbus.Instrument(Parameters["SerialPort"], int(slave))
+                    self.rs485.serial.baudrate = Parameters["Mode1"]
+                    self.rs485.serial.bytesize = 8
+                    self.rs485.serial.parity = minimalmodbus.serial.PARITY_NONE
+                    self.rs485.serial.stopbits = 1
+                    self.rs485.serial.timeout = 0.5
+                    self.rs485.serial.exclusive = False # TODO
+                    self.rs485.debug = True
+                    self.rs485.mode = minimalmodbus.MODE_RTU
+                    self.rs485.close_port_after_each_call = True
+                    if retry==2:
+                        self.rs485.serial.exclusive = False
+                    register=self.rs485.read_registers(0, 9, 4) # Read all registers from 0 to 8, using function code 4
+                    self.rs485.serial.close()  #  Close that door !
+                except:
+                    self.rs485.serial.close()  #  Close that door !
+                    Domoticz.Error(f"Try {retry}: Error reading Modbus registers from device {slave}")
+                    time.sleep(0.2)
+                else:
+                    voltage=register[0]/10                          # V
+                    current=(register[1] + (register[2]<<16))/1000  # A
+                    power=(register[3] + (register[4]<<16))/10      # W
+                    energy=(register[5] + (register[6]<<16))        # Wh
+                    frequency=register[7]/10                        # Hz
+                    pf=register[8]/100                              # %
 
-                if Parameters["Mode6"] == 'Debug':
-                    Domoticz.Log(f"Slave={slave}, P={power}W E={energy}Wh V={voltage}V I={current}A, f={frequency}Hz PF={pf}%")
-                Devices[s+1].Update(0, str(power) + ';' + str(energy))
-                Devices[s+2].Update(0, str(voltage))
-                Devices[s+3].Update(0, str(current))
-                Devices[s+4].Update(0, str(frequency))
-                Devices[s+5].Update(0, str(pf))
+                    Domoticz.Status(f"Try {retry}: Slave={slave}, P={power}W E={energy}Wh V={voltage}V I={current}A, f={frequency}Hz PF={pf}%")
+                    Devices[s+1].Update(0, str(power) + ';' + str(energy))
+                    Devices[s+2].Update(0, str(voltage))
+                    Devices[s+3].Update(0, str(current))
+                    Devices[s+4].Update(0, str(frequency))
+                    Devices[s+5].Update(0, str(pf))
+                    break
             s+=DEVSMAX    # Increment the base for each device unit
 
     def onCommand(self, Unit, Command, Level, Hue):
-        Domoticz.Log(f"Command for {Devices[Unit].Name}: Unit={Unit}, Command={Command}, Level={Level}")
+        Domoticz.Status(f"Command for {Devices[Unit].Name}: Unit={Unit}, Command={Command}, Level={Level}")
 
 global _plugin
 _plugin = BasePlugin()
