@@ -3,6 +3,8 @@ ChangeLog
 
 2025-02-05 1.1
 	Better management of serial locking
+	Remove debug True/False parameter (Status / Error flags are enough for
+	this)
 
 20231218 1.0
 	First version
