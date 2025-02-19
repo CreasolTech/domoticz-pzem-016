@@ -129,7 +129,10 @@ class BasePlugin:
                     self.rs485.serial.close()  #  Close that door !
                 except:
                     self.rs485.serial.close()  #  Close that door !
-                    Domoticz.Error(f"Try {retry}: Error reading Modbus registers from device {slave}")
+                    if retry<2:
+                        Domoticz.Status(f"Try {retry}: Error reading Modbus registers from device {slave}")
+                    else:
+                        Domoticz.Error(f"Try {retry}: Error reading Modbus registers from device {slave}")
                     time.sleep(0.2)
                 else:
                     voltage=register[0]/10                          # V
